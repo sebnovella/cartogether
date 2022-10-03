@@ -143,7 +143,7 @@ def write_shapefile_all_levels(
     path_within_bucket=PATH_WITHIN_BUCKET,
 ):
 
-    [
+    for level in object[level_var].unique():
         write_shapefile_subset(
             object,
             shapefile_format=shapefile_format,
@@ -153,8 +153,6 @@ def write_shapefile_all_levels(
             path_within_bucket=path_within_bucket,
             value=level,
         )
-        for level in object[level_var].unique()
-    ]
 
 
 def write_shapefile_s3_shp(object, fs, write_path, driver=None):
@@ -166,10 +164,8 @@ def write_shapefile_s3_shp(object, fs, write_path, driver=None):
 
     list_files_shp = os.listdir(tdir.name)
 
-    [
+    for file_name in list_files_shp:
         fs.put(f"{tdir.name}/{file_name}", f"{write_path}{file_name}")
-        for file_name in list_files_shp
-    ]
 
 
 def write_shapefile_s3_all(
@@ -201,6 +197,8 @@ def write_shapefile_s3_all(
             shapefile_format=shapefile_format,
             decoupage=decoupage,
             year=year,
+            bucket = bucket,
+            path_within_bucket=path_within_bucket
         )
 
 
